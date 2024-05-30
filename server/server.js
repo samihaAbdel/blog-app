@@ -5,6 +5,8 @@ import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import commentRoutes from "./routes/commentRoutes.js";
+import postCategoriesRoutes from "./routes/postCategoriesRoutes.js";
+
 import cors from "cors";
 import {
   errorResponseHandler,
@@ -22,6 +24,7 @@ app.use(cors());
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
+app.use("/api/post-categories", postCategoriesRoutes)
 
 //static assets
 const uploadsDirectory = path.join(__dirname, "/uploads");

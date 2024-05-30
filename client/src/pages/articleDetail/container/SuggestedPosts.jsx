@@ -15,8 +15,8 @@ const SuggestedPosts = ({ className, header, posts = [], tags }) => {
           <div key={index} className="flex space-x-3 flex-nowrap items-center">
             <img
               src={
-                item?.image
-                  ? stables.UPLOAD_FOLDER_BASE_URL + item?.image
+                item?.photo
+                  ? stables.UPLOAD_FOLDER_BASE_URL + item?.photo
                   : images.samplePostImg
               }
               alt={item.title}
@@ -41,7 +41,9 @@ const SuggestedPosts = ({ className, header, posts = [], tags }) => {
         Tags
       </h2>
       {tags.length === 0 ? (
-        <p className="text-slate-500 text-xs mt-2">there is not tags for this post</p>
+        <p className="text-slate-500 text-xs mt-2">
+          there is not tags for this post
+        </p>
       ) : (
         <div className="flex flex-wrap gap-x-2 gap-y-2 mt-4">
           {tags.map((item, index) => (

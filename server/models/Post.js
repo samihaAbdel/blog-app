@@ -1,5 +1,3 @@
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 import { Schema, model } from "mongoose";
 
 const PostSchema = new Schema(
@@ -15,6 +13,7 @@ const PostSchema = new Schema(
   },
   { timestamps: true, toJSON: { virtuals: true } }
 );
+
 PostSchema.virtual("comments", {
   ref: "Comment",
   localField: "_id",

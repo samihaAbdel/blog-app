@@ -13,6 +13,7 @@ import ArticleDetailSkeleton from "./components/ArticleDetailSkelton";
 import ErrorMessage from "../../components/ErrorMessage";
 import { useSelector } from "react-redux";
 import parseJsonToHtml from "../../utils/parseJsonToHtml";
+import Editor from "../../components/editor/Editor";
 
 const ArticleDetailpage = () => {
   const { slug } = useParams();
@@ -20,29 +21,31 @@ const ArticleDetailpage = () => {
   const [breadCrumbsData, setBreadCrumbsData] = useState([]);
   const [body, setBody] = useState(null);
 
-  const { data, isLoading, error, isError } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryFn: () => getSinglePost({ slug }),
     queryKey: ["blog", slug],
+    onSuccess: (data) => {
+      setBreadCrumbsData([
+        { name: "Home", link: "/" },
+        { name: "Blog", link: "/blog" },
+        { name: data.title, link: `/blog/${data.slug}` },
+      ]);
+      setBody(parseJsonToHtml(data?.body));
+    },
   });
   const { data: postsData } = useQuery({
     queryFn: () => getAllPosts(),
     queryKey: ["posts"],
   });
 
-  const handleSuccess = (data) => {
-    setBreadCrumbsData([
-      { name: "Home", link: "/" },
-      { name: "Blog", link: "/blog" },
-      { name: data.title, link: `/blog/${data.slug}` },
-    ]);
-    setBody(parseJsonToHtml(data?.body));
-  };
+  // const handleSuccess = (data) => {
+  // };
 
-  useEffect(() => {
-    if (!isLoading && !error && data) {
-      handleSuccess(data);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (!isLoading && !error && data) {
+  //     handleSuccess(data);
+  //   }
+  // }, [data]);
 
   // console.log(data);
   return (
@@ -78,7 +81,11 @@ const ArticleDetailpage = () => {
             <h1 className="text-xl font-medium font-roboto mt-4 text-dark-hard md:text-[26px]">
               {data?.title}
             </h1>
-            <div className="mt-4 prose prose-sm sm:prose-base">{body}</div>
+            <div className="w-full">
+              {!isLoading && !isError && (
+                <Editor content={data?.body} editable={false} />
+              )}
+            </div>
             <CommentConatiner
               comments={data?.comments}
               className="mt-10"

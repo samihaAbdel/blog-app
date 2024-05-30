@@ -16,6 +16,7 @@ export const createPost = async (req, res, next) => {
       },
       photo: "",
       user: req.user._id,
+      categories: [],
     });
     const createdPost = await post.save();
     return res.json(createdPost);
@@ -97,6 +98,10 @@ export const getPost = async (req, res, next) => {
         select: ["avatar", "name"],
       },
       {
+        path: "categories",
+        select: ["title"],
+      },
+      {
         path: "comments",
         match: {
           check: true,
@@ -145,16 +150,16 @@ export const getAllPosts = async (req, res, next) => {
     const skip = (page - 1) * pageSize;
     const total = await Post.find(where).countDocuments();
     const pages = Math.ceil(total / pageSize);
-     res.header({
-       "x-filter": filter,
-       "x-totalcount": JSON.stringify(total),
-       "x-currentpage": JSON.stringify(page),
-       "x-pagesize": JSON.stringify(pageSize),
-       "x-totalpagecount": JSON.stringify(pages),
-     });
+    res.header({
+      "x-filter": filter,
+      "x-totalcount": JSON.stringify(total),
+      "x-currentpage": JSON.stringify(page),
+      "x-pagesize": JSON.stringify(pageSize),
+      "x-totalpagecount": JSON.stringify(pages),
+    });
 
     if (page > pages) {
-     return res.json([])
+      return res.json([]);
     }
     // console.log(query); // Vérifiez que c'est bien une instance de Query
 
@@ -168,7 +173,7 @@ export const getAllPosts = async (req, res, next) => {
         },
       ])
       .sort({ updatedAt: "desc" });
-   
+
     return res.json(result);
   } catch (error) {
     next(error);

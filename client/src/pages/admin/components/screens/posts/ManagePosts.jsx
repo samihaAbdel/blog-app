@@ -146,9 +146,9 @@ const ManagePosts = () => {
                                   <img
                                     alt="profil"
                                     src={
-                                      post?.image
+                                      post?.photo
                                         ? stables.UPLOAD_FOLDER_BASE_URL +
-                                          post?.image
+                                          post?.photo
                                         : images.samplePostImg
                                     }
                                     className="mx-auto object-cover rounded-sm w-10 aspect-square "
